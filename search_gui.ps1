@@ -55,6 +55,8 @@ $results.Multiline = $true
 $results.Location = New-Object System.Drawing.Point(22, 130)
 $results.Size = New-Object System.Drawing.Size(750, 300)
 $results.ScrollBars = "Vertical"
+cd \\OMEGA.DCE-EIR.NET\NATDFS\CRA\HQ\ITB\ITB_H19\UV4\SXA401
+$results.Text += "Current directory is: " + $PWD
 
 
 ## Add buttons
@@ -81,7 +83,8 @@ $main_form.Controls.AddRange(@($title, $description, $press_enter, $close_button
 
 function search()
 {
-    $results.Text += "`r`n" + "testing display: " + $search.Text
+    
+    $results.Text += "`r`n" + $search.Text
 }
 
 function closeForm()
@@ -99,8 +102,6 @@ $close_button.Add_Click( {closeForm} )
 if ($form_openclose_event -eq [System.Windows.Forms.DialogResult]::Cancel)
 {
     Write-Output 'User pressed close to exit the form.'
-    #$x = $search.Text
-    #$x
 }
 
 #------------[Show form]------------
@@ -108,3 +109,4 @@ if ($form_openclose_event -eq [System.Windows.Forms.DialogResult]::Cancel)
 # Display form
 $main_form.TopMost = $true
 $form_openclose_event = $main_form.ShowDialog()
+
