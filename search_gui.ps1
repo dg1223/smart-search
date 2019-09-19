@@ -8,6 +8,7 @@
 #------------[Initialisation]------------
 
 # Initialize powershell GUI
+Import-Module C:\Users\sxa401\Powershell\Modules\folderselect.psm1
 Add-Type -AssemblyName System.Windows.Forms
 
 [System.Windows.Forms.Application]::EnableVisualStyles()
@@ -45,8 +46,8 @@ $description.Font = "Microsoft Sans Serif, 10"
 
 # Search box
 $search = New-Object System.Windows.Forms.TextBox
-$search.Location = New-Object System.Drawing.Point(22, 100)
-$search.Size = New-Object System.Drawing.Size(260,20)
+$search.Location = New-Object System.Drawing.Point(400, 100)
+$search.Size = New-Object System.Drawing.Size(260,50)
 #$search.AutoSize = $true
 
 # Results table
@@ -55,8 +56,6 @@ $results.Multiline = $true
 $results.Location = New-Object System.Drawing.Point(22, 130)
 $results.Size = New-Object System.Drawing.Size(750, 300)
 $results.ScrollBars = "Vertical"
-cd \\OMEGA.DCE-EIR.NET\NATDFS\CRA\HQ\ITB\ITB_H19\UV4\SXA401
-$results.Text += "Current directory is: " + $PWD
 
 
 ## Add buttons
@@ -65,7 +64,7 @@ $results.Text += "Current directory is: " + $PWD
 $press_enter = New-Object System.Windows.Forms.Button
 $press_enter.Text = "Enter"
 $press_enter.AutoSize = $true
-$press_enter.Location = New-Object System.Drawing.Point(300,95)
+$press_enter.Location = New-Object System.Drawing.Point(700,95)
 $press_enter.Font = "Microsoft Sans Serif, 10"
 
 # Close button
@@ -75,11 +74,41 @@ $close_button.AutoSize = $true
 $close_button.Location = New-Object System.Drawing.Point(350,500)
 $close_button.Font = "Microsoft Sans Serif, 10"
 
+# Select folder button
+$select_button = New-Object System.Windows.Forms.Button
+$select_button.Text = "Select folder"
+$select_button.AutoSize = $true
+$select_button.Location = New-Object System.Drawing.Point(22,95)
+$select_button.Font = "Microsoft Sans Serif, 10"
+
 # Add elements to the form
-$main_form.Controls.AddRange(@($title, $description, $press_enter, $close_button, $search, $results))
+$main_form.Controls.AddRange(@($title, $description, $press_enter, $close_button, $select_button, $search, $results))
 
 
 #------------[Functions]------------
+
+function current_dir ($input_folder)
+{
+    cd $input_folder
+    $results.Text += "Current directory is: " + $PWD + "``n"
+}
+
+function invoke_dir
+{
+    $selectFolder = New-Object System.Windows.Forms.FolderBrowserDialog
+    $selectFolder.Description = "Select a folder"
+    #$selectFolder.RootFolder = "\\OMEGA.DCE-EIR.NET\natdfs\CRA\HQ\ITB\ITB_H19\GV3\ITB\SOLUTIONS\SAID"
+
+    if ($selectFolder.ShowDialog() -eq "OK")
+    {
+        $cur_folder += $selectFolder.SelectedPath
+    }
+    
+    #cd $cur_folder
+    current_dir($cur_folder)
+    return $cur_folder
+    
+}
 
 function search()
 {
@@ -95,8 +124,11 @@ function closeForm()
 
 #------------[Logic]------------
 
+current_dir($HOME)
+$select_button.Add_Click( {invoke_dir} )
 $press_enter.Add_Click( {search} )
 $close_button.Add_Click( {closeForm} )
+#invoke_dir
 
 
 if ($form_openclose_event -eq [System.Windows.Forms.DialogResult]::Cancel)
@@ -109,4 +141,3 @@ if ($form_openclose_event -eq [System.Windows.Forms.DialogResult]::Cancel)
 # Display form
 $main_form.TopMost = $true
 $form_openclose_event = $main_form.ShowDialog()
-
