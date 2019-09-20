@@ -119,7 +119,7 @@ namespace FolderSelect
 				type = m_asmb.GetType(m_ns + "." + names[0]);
 
 			for (int i = 1; i < names.Length; ++i) {
-				type = type.GetNestedType(names, BindingFlags.NonPublic);
+				type = type.GetNestedType(names[i], BindingFlags.NonPublic);
 			}
 			return type;
 		}
