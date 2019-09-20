@@ -8,9 +8,9 @@
 #------------[Initialisation]------------
 
 # Initialize powershell GUI
-Import-Module C:\Users\sxa401\Powershell\Modules\folderselect.psm1
+Import-Module BuildDialog
+BuildDialog
 Add-Type -AssemblyName System.Windows.Forms
-
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
 
@@ -95,9 +95,12 @@ function current_dir ($input_folder)
 
 function invoke_dir
 {
-    $selectFolder = New-Object System.Windows.Forms.FolderBrowserDialog
-    $selectFolder.Description = "Select a folder"
-    #$selectFolder.RootFolder = "\\OMEGA.DCE-EIR.NET\natdfs\CRA\HQ\ITB\ITB_H19\GV3\ITB\SOLUTIONS\SAID"
+    #$selectFolder = New-Object System.Windows.Forms.FolderBrowserDialog
+
+    $selectFolder = New-Object FolderSelect.FolderSelectDialog
+    $selectFolder.Title = "Select a folder"
+    #$selectFolder.ShowDialog() | Out-Null
+    
 
     if ($selectFolder.ShowDialog() -eq "OK")
     {
