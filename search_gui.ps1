@@ -5,6 +5,8 @@
     Let's the user find files by searching with filename or any keyword that should exist in the contents of the file
 #>
 
+# https://social.technet.microsoft.com/Forums/windows/en-US/3aa84e9f-c1bc-4e5a-943b-f6d8437c59fa/need-help-creating-gui-to-select-folder-but-that-looks-like-openfiledialog-not-using-the?forum=winserverpowershell
+
 #------------[Initialisation]------------
 
 # Initialize powershell GUI
@@ -99,7 +101,7 @@ function invoke_dir
 
     $selectFolder = New-Object FolderSelect.FolderSelectDialog
     $selectFolder.Title = "Select a folder"
-    #$selectFolder.ShowDialog() | Out-Null
+    $selectFolder.ShowDialog() | Out-Null
     
 
     if ($selectFolder.ShowDialog() -eq "OK")
